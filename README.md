@@ -25,38 +25,72 @@ The service is built using **Flask** to provide a REST API for generating images
 ### Prerequisites
 
 - Python 3.8 or higher
+- Docker
 - A GPU with CUDA support (optional but recommended for faster inference)
+- NVIDIA drivers installed on the host machine
 
-### Install Dependencies
+---
 
-1. Install the required Python libraries:
+### Step 1: Set Up GPU Support for Docker (Optional)
+
+If you want to enable GPU support, follow these steps to install the NVIDIA Container Toolkit:
+
+1. **Add the NVIDIA package repository:**
+
    ```bash
-   pip install flask torch diffusers transformers accelerate
+   curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey | sudo gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg \
+     && curl -s -L https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-container-toolkit.list | \
+       sed 's#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g' | \
+       sudo tee /etc/apt/sources.list.d/nvidia-container-toolkit.list
+   ```
+
+2. **Update the package list and install the toolkit:**
+
+   ```bash
+   sudo apt-get update
+   sudo apt-get install -y nvidia-container-toolkit
+   ```
+
+3. **Restart the Docker daemon:**
+
+   ```bash
+   sudo systemctl restart docker
    ```
 
 ---
 
-## Usage
+### Step 2: Start the Web Service
 
-### Step 1: Start the Web Service
+1. **Build the Docker image:**
 
-Run the Flask application:
-```bash
-python app.py
-```
+   ```bash
+   docker build -t flask-ai-image-generation .
+   ```
+
+2. **Run the Docker container:**
+
+   ```bash
+   docker run --gpus all -p 5000:5000 flask-ai-image-generation
+   ```
+
+   If you don't have a GPU or don't want to use one, run the container without the GPU flag:
+
+   ```bash
+   docker run -p 5000:5000 flask-ai-image-generation
+   ```
 
 This will start the service at `http://127.0.0.1:5000`.
 
 ---
 
-### Step 2: Send a Request
+### Step 3: Send a Request
 
 Send a POST request to the `/generate-image` endpoint with a JSON body that includes the prompt, number of inference steps, and guidance scale. For example:
 
 **curl Example**:
 ```bash
 curl -X POST -H "Content-Type: application/json" \
-     -d '{"prompt":"A cinematic shot a 3 maneki neko in South America."}' \
+     -d '{"prompt":"A cinematic shot of 3 maneki neko in South America."}' \
      http://127.0.0.1:5000/generate-image --output result.png
 ```
 
@@ -79,6 +113,7 @@ This will generate an image and save it as `result.png`.
 
 - This service is restricted to the **`stabilityai/sdxl-turbo`** model due to its smaller size and faster inference time. Other models may exceed the limits of typical deployment environments.
 - Inference time may vary based on hardware. A GPU is highly recommended for efficient performance.
+
 ---
 
-### Happy Generating! 🚀
+## Happy Generating! 🚀
