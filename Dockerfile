@@ -11,4 +11,4 @@ COPY . /app/
 
 EXPOSE 5000
 
-CMD ["python3", "app/app.py"]
+CMD ["python3", "webservice/app.py"]

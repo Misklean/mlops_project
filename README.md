@@ -15,8 +15,9 @@ The service is built using **Flask** to provide a REST API for generating images
 
 ## Features
 
-- **Text-to-Image Generation**: Accepts a prompt (text description) and generates a corresponding image.
-- **Streamlined Output**: Converts the generated image into a byte stream and sends it as the API response in PNG format.
+- **Text-to-Image Generation**: Accepts a prompt (text description) and generates a corresponding image.  
+- **Streamlined Output**: Converts the generated image into a byte stream and sends it as the API response in PNG format.  
+- **Secure Web Service**: Implements authentication using a token-based system to ensure that only authorized users can access the service.  
 
 ---
 
@@ -89,9 +90,10 @@ Send a POST request to the `/generate-image` endpoint with a JSON body that incl
 
 **curl Example**:
 ```bash
-curl -X POST -H "Content-Type: application/json" \
-     -d '{"prompt":"A cinematic shot of 3 maneki neko in South America."}' \
-     http://127.0.0.1:5000/generate-image --output result.png
+curl -X POST http://127.0.0.1:5000/generate-image \
+-H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiZGVtbyIsImlhdCI6MTY5MzY2NjY2Nn0._sCx6DJMKvhG6Dp9tcDw2q8P7TXqEwnCX7H8CfM0OsE" \
+-H "Content-Type: application/json" \
+-d '{"prompt": "A majestic mountain under a pink sunset"}' --output result.png
 ```
 
 This will generate an image and save it as `result.png`.
