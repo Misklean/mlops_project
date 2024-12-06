@@ -8,14 +8,15 @@ from io import BytesIO
 # Load environment variables from .env file
 load_dotenv()
 DISCORD_TOKEN = os.getenv('DISCORD_TOKEN')
+URL = os.getenv("WEBSERVICE_URL", "http://webservice:5000")  # Default to http://webservice:5000
+API_URL = f"{URL}/generate-image"  # Set the API endpoint URL
 
 # Set up Discord client
 intents = discord.Intents.default()
 intents.messages = True
 bot = commands.Bot(command_prefix="!", intents=intents)
 
-# API endpoint and authorization token
-API_URL = "http://127.0.0.1:5000/generate-image"
+# API authorization token
 AUTH_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiZGVtbyIsImlhdCI6MTY5MzY2NjY2Nn0._sCx6DJMKvhG6Dp9tcDw2q8P7TXqEwnCX7H8CfM0OsE"
 
 # Event when the bot is ready

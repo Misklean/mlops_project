@@ -4,9 +4,6 @@ import torch
 import logging
 from io import BytesIO
 
-# Set up logging for debugging
-logging.basicConfig(level=logging.DEBUG)
-
 # Initialize the Flask app
 app = Flask(__name__)
 

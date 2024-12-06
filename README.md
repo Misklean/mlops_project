@@ -67,50 +67,24 @@ If you want to enable GPU support, follow these steps to install the NVIDIA Cont
 
 ---
 
-### Step 2: Start the Web Service
+### Step 2: Discord Bot Setup
 
-1. **Build the Docker image:**
+**Create a `.env` file** in the `discord_bot` directory:  
+   Add your Discord bot token to the `.env` file:
 
-   ```bash
-   docker build -t flask-ai-image-generation .
+   ```plaintext
+   DISCORD_TOKEN=<Your_Discord_Bot_Token>
    ```
-
-2. **Run the Docker container:**
-
-   ```bash
-   docker run --gpus all -p 5000:5000 flask-ai-image-generation
-   ```
-
-   If you don't have a GPU or don't want to use one, run the container without the GPU flag:
-
-   ```bash
-   docker run -p 5000:5000 flask-ai-image-generation
-   ```
-
-This will start the service at `http://127.0.0.1:5000`.
 
 ---
 
-### Step 3: Set Up the Discord Bot
+### Step 3: Launch services
 
-1. **Create a `.env` file**:  
-   Create a file named `.env` in the project directory and add your Discord bot token:
+You can easily launch the two services using Docker Compose. To do so, run the following command:
 
-   ```plaintext
-   DISCORD_TOKEN="<Your Discord Bot Token Here>"
-   ```
-
-2. **Install the required dependencies**:
-
-   ```bash
-   pip install discord.py python-dotenv requests
-   ```
-
-3. **Run the bot**:
-
-   ```bash
-   python discord_bot.py
-   ```
+```bash
+docker-compose up --build
+```
 
 ---
 
@@ -119,9 +93,7 @@ This will start the service at `http://127.0.0.1:5000`.
 ### Web Service
 1. The web service accepts a POST request containing:
    - `prompt`: A text description for the desired image.
-
 2. The Flask app uses the SDXL Turbo model to generate the image based on the prompt.
-
 3. The generated image is converted into a byte stream and returned as the response in PNG format.
 
 ### Discord Bot
