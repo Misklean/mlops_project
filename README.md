@@ -1,6 +1,6 @@
-# AI Image Generation Web Service
+# AI Image Generation Web Service and Discord Bot
 
-This project demonstrates how to use and deploy an AI-based image generation model as a web service. The service generates images based on text prompts and is designed to be lightweight and fast for real-time applications.
+This project demonstrates how to use and deploy an AI-based image generation model as a web service and integrate it with a Discord bot. The service generates images based on text prompts and is designed to be lightweight and fast for real-time applications.
 
 ## Overview
 
@@ -9,15 +9,21 @@ The web service uses the **Stability AI's SDXL Turbo** model, available on Huggi
 - It is efficient and optimized for smaller hardware requirements.
 - Other models are too large or take too much time during inference, making them impractical for this deployment.
 
-The service is built using **Flask** to provide a REST API for generating images based on user-provided input.
+In addition to the web service, this project includes a **Discord bot** that allows users to interact with the image generation API directly from Discord. Users can mention the bot with a prompt, and it will generate and send back an image based on their input.
 
 ---
 
 ## Features
 
+### Web Service
 - **Text-to-Image Generation**: Accepts a prompt (text description) and generates a corresponding image.  
 - **Streamlined Output**: Converts the generated image into a byte stream and sends it as the API response in PNG format.  
-- **Secure Web Service**: Implements authentication using a token-based system to ensure that only authorized users can access the service.  
+- **Secure Web Service**: Implements authentication using a token-based system to ensure that only authorized users can access the service.
+
+### Discord Bot
+- **Real-Time Interaction**: Generate images directly from Discord by mentioning the bot and providing a text prompt.  
+- **Seamless Integration**: The bot interacts with the web service to retrieve and send back the generated image.  
+- **Easy Deployment**: Set up the bot with minimal configuration using a `.env` file.
 
 ---
 
@@ -29,6 +35,7 @@ The service is built using **Flask** to provide a REST API for generating images
 - Docker
 - A GPU with CUDA support (optional but recommended for faster inference)
 - NVIDIA drivers installed on the host machine
+- A Discord account and bot token
 
 ---
 
@@ -84,8 +91,49 @@ This will start the service at `http://127.0.0.1:5000`.
 
 ---
 
-### Step 3: Send a Request
+### Step 3: Set Up the Discord Bot
 
+1. **Create a `.env` file**:  
+   Create a file named `.env` in the project directory and add your Discord bot token:
+
+   ```plaintext
+   DISCORD_TOKEN="<Your Discord Bot Token Here>"
+   ```
+
+2. **Install the required dependencies**:
+
+   ```bash
+   pip install discord.py python-dotenv requests
+   ```
+
+3. **Run the bot**:
+
+   ```bash
+   python discord_bot.py
+   ```
+
+---
+
+## How It Works
+
+### Web Service
+1. The web service accepts a POST request containing:
+   - `prompt`: A text description for the desired image.
+
+2. The Flask app uses the SDXL Turbo model to generate the image based on the prompt.
+
+3. The generated image is converted into a byte stream and returned as the response in PNG format.
+
+### Discord Bot
+1. When a user mentions the bot in a message on Discord with a text prompt, the bot extracts the prompt.
+2. The bot sends the prompt to the web service's `/generate-image` endpoint using a POST request.
+3. The bot receives the generated image in PNG format and sends it back to the user in Discord, tagging them.
+
+---
+
+### Example Usage
+
+#### Web Service:
 Send a POST request to the `/generate-image` endpoint with a JSON body that includes the prompt, number of inference steps, and guidance scale. For example:
 
 **curl Example**:
@@ -96,24 +144,18 @@ curl -X POST http://127.0.0.1:5000/generate-image \
 -d '{"prompt": "A majestic mountain under a pink sunset"}' --output result.png
 ```
 
-This will generate an image and save it as `result.png`.
-
----
-
-## How It Works
-
-1. The web service accepts a POST request containing:
-   - `prompt`: A text description for the desired image.
-
-2. The Flask app uses the SDXL Turbo model to generate the image based on the prompt.
-
-3. The generated image is converted into a byte stream and returned as the response in PNG format.
+#### Discord Bot:
+1. Mention the bot in a Discord channel with your prompt:
+   ```
+   @ImageGenBot A majestic mountain under a pink sunset
+   ```
+2. The bot will respond with the generated image.
 
 ---
 
 ## Limitations
 
-- This service is restricted to the **`stabilityai/sdxl-turbo`** model due to its smaller size and faster inference time. Other models may exceed the limits of typical deployment environments.
+- The web service is restricted to the **`stabilityai/sdxl-turbo`** model due to its smaller size and faster inference time. Other models may exceed the limits of typical deployment environments.
 - Inference time may vary based on hardware. A GPU is highly recommended for efficient performance.
 
 ---
