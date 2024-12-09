@@ -29,6 +29,18 @@ In addition to the web service, this project includes a **Discord bot** that all
 
 ## Installation
 
+### You can install and launch this on a new VM using the command:
+```bash
+# <Here goes the command>
+```
+
+---
+
+### We use a Docker Compose to launch the application, but the GPU is needed for optimal performance:
+'''bash
+docker-compose up
+'''
+
 ### Prerequisites
 
 - Python 3.8 or higher
