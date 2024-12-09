@@ -38,6 +38,7 @@ echo ===== Discord Bot Setup
 echo DISCORD_TOKEN=$1 > ./discord_bot/.env
 
 # =============================================
+export USE_NNPACK=0
 
 echo ===== Launch services
 
