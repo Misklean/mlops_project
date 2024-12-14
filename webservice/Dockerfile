@@ -7,9 +7,6 @@ RUN apt-get update && apt-get install -y python3 python3-pip python3-dev
 COPY requirements.txt /app/
 RUN pip install --no-cache-dir -r requirements.txt
 
-ARG HUGGINGFACE_TOKEN
-RUN huggingface-cli login --token $HUGGINGFACE_TOKEN
-
 COPY . /app/
 
 EXPOSE 5000
