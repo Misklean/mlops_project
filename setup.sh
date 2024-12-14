@@ -41,6 +41,10 @@ sudo systemctl restart docker
 echo ===== Discord Bot Setup
 
 echo DISCORD_TOKEN=$1 > ./discord_bot/.env
+HUGGINGFACE_TOKEN="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"
+
+# Log in to Hugging Face using the token
+echo "$HUGGINGFACE_TOKEN" | huggingface-cli login --token
 
 # =============================================
 export USE_NNPACK=0

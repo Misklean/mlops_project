@@ -24,14 +24,13 @@ In addition to the web service, this project includes a **Discord bot** that all
 - **Real-Time Interaction**: Generate images directly from Discord by mentioning the bot and providing a text prompt.  
 - **Seamless Integration**: The bot interacts with the web service to retrieve and send back the generated image.  
 - **Easy Deployment**: Set up the bot with minimal configuration using a `.env` file.
-
 ---
 
 ## Installation
 
 ### You can install and launch this on a new VM using the command:
 ```bash
-# <Here goes the command>
+git clone https://github.com/Misklean/mlops_project.git; cd mlops_project/; ./setup.sh <DISCORD_TOKEN_HERE> 
 ```
 
 ---
