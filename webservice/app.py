@@ -12,7 +12,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 try:
     # Load the model
     pipe = AutoPipelineForText2Image.from_pretrained(
-        "black-forest-labs/FLUX.1-dev",
+        "stabilityai/sdxl-turbo",
         torch_dtype=torch.float16 if torch.cuda.is_available() else torch.float32,  # Use float16 for GPU, float32 for CPU
         variant="fp16" if torch.cuda.is_available() else None  # Variant only needed for GPU
     )
