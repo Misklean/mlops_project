@@ -7,7 +7,7 @@ RUN apt-get update && apt-get install -y python3 python3-pip python3-dev
 COPY requirements.txt /app/
 RUN pip install --no-cache-dir -r requirements.txt
 
-RUN echo "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" | huggingface-cli login --token
+RUN huggingface-cli login --token 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
 
 COPY . /app/
 
