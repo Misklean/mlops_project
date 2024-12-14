@@ -11,11 +11,6 @@ DISCORD_TOKEN = os.getenv('DISCORD_TOKEN')
 URL = os.getenv("WEBSERVICE_URL", "http://webservice:5000")  # Default to http://webservice:5000
 API_URL = f"{URL}/generate-image"  # Set the API endpoint URL
 
-import torch
-
-torch.backends.nnpack.enabled = False
-
-
 # Set up Discord client
 intents = discord.Intents.default()
 intents.messages = True
