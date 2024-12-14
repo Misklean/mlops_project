@@ -21,10 +21,15 @@ sudo usermod -aG docker $USER
 
 echo ===== Set Up GPU Support for Docker
 
-curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey | sudo gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg \
-  && curl -s -L https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-container-toolkit.list | \
-    sed 's#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g' | \
-    sudo tee /etc/apt/sources.list.d/nvidia-container-toolkit.list
+if [ -f "$KEYRING_PATH" ]; then
+    echo "File '$KEYRING_PATH' already exists. Skipping keyring setup."
+else
+    # Proceed with downloading and setting up the keyring if it doesn't exist
+    curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey | sudo gpg --dearmor -o "$KEYRING_PATH" \
+      && curl -s -L https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-container-toolkit.list | \
+        sed "s#deb https://#deb [signed-by=$KEYRING_PATH] https://#g" | \
+        sudo tee /etc/apt/sources.list.d/nvidia-container-toolkit.list
+fi
 
 sudo apt update -y
 sudo apt install -y nvidia-container-toolkit
