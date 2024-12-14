@@ -42,6 +42,10 @@ echo ===== Discord Bot Setup
 
 echo DISCORD_TOKEN=$1 > ./discord_bot/.env
 
+echo ===== HuggingFace Token
+
+export HUGGINGFACE_TOKEN=$2
+
 # =============================================
 
 echo ===== Launch services
