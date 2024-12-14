@@ -41,7 +41,6 @@ sudo systemctl restart docker
 echo ===== Discord Bot Setup
 
 echo DISCORD_TOKEN=$1 > ./discord_bot/.env
-HUGGINGFACE_TOKEN="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"
 
 # =============================================
 
