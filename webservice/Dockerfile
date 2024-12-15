@@ -1,8 +1,9 @@
-FROM nvidia/cuda:11.2.2-cudnn8-runtime-ubuntu20.04
+FROM pytorch/pytorch:2.0.1-cuda11.7-cudnn8-runtime
 
 WORKDIR /app
 
-RUN apt-get update && apt-get install -y python3 python3-pip python3-dev
+RUN apt-get update && apt-get install -y python3 python3-pip python3-dev \
+    build-essential
 
 COPY requirements.txt /app/
 RUN pip install --no-cache-dir -r requirements.txt

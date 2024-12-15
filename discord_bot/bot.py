@@ -1,8 +1,8 @@
+import aiohttp
 import os
 import discord
 from discord.ext import commands
 from dotenv import load_dotenv
-import requests
 from io import BytesIO
 
 # Load environment variables from .env file
@@ -47,32 +47,33 @@ async def on_message(message):
         payload = {"prompt": user_input}
 
         try:
-            # Send the POST request
-            response = requests.post(API_URL, headers=headers, json=payload, stream=True)
+            # Use aiohttp for async HTTP request
+            async with aiohttp.ClientSession() as session:
+                async with session.post(API_URL, headers=headers, json=payload) as response:
+                    if response.status == 200:
+                        # Read the image content
+                        image_bytes = BytesIO(await response.read())
+                        image_bytes.seek(0)
 
-            if response.status_code == 200:
-                # Load the image into BytesIO
-                image_bytes = BytesIO(response.content)
-                image_bytes.seek(0)
-
-                # Send the image to the Discord channel
-                await message.channel.send(
-                    content=f"{message.author.mention}, here's your image!",
-                    file=discord.File(image_bytes, filename="generated_image.png")
-                )
-            else:
-                # Handle non-200 status codes
-                await message.channel.send(
-                    f"Sorry {message.author.mention}, I couldn't generate the image. "
-                    f"Error: {response.status_code} - {response.text}"
-                )
+                        # Send the image to the Discord channel
+                        await message.channel.send(
+                            content=f"{message.author.mention}, here's your image!",
+                            file=discord.File(image_bytes, filename="generated_image.png")
+                        )
+                    else:
+                        # Handle non-200 status codes
+                        response_text = await response.text()
+                        await message.channel.send(
+                            f"Sorry {message.author.mention}, I couldn't generate the image. "
+                            f"Error: {response.status} - {response_text}"
+                        )
         except Exception as e:
             await message.channel.send(
                 f"An error occurred while processing your request, {message.author.mention}. Please try again later."
             )
             print(f"Error: {e}")
 
-    # Allow the bot to process commands (in case any are implemented)
+    # Allow the bot to process commands
     await bot.process_commands(message)
 
 # Run the bot

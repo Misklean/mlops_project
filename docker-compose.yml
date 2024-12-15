@@ -13,7 +13,15 @@ services:
         reservations:
           devices:
             - driver: nvidia
-              capabilities: [gpu]  # Specify GPU capabilities
+              count: 1  #limit to 1 GPU
+              capabilities: [gpu]
+    
+    # For explicit GPU support
+    runtime: nvidia
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+    volumes:
+      - /usr/bin/nvidia-smi:/usr/bin/nvidia-smi:ro
 
   discord_bot:
     build: ./discord_bot
@@ -23,7 +31,7 @@ services:
     networks:
       - app-network
     environment:
-      - WEBSERVICE_URL=http://webservice:5000  # Updated to use container name as hostname
+      - WEBSERVICE_URL=http://webservice:5000
 
 networks:
   app-network:
